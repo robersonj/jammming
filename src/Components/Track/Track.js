@@ -19,11 +19,14 @@ class Track extends React.Component {
         this.props.onRemove(this.props.track);
     }
     
+    // Renders either a + or a - link to add or remove tracks from playlist.
     renderAction() {
         if (this.props.isRemoval) {
-            return <a className="Track-action" onClick={this.removeTrack}>-</a>
+            return <a   className="Track-action" 
+                        onClick={this.removeTrack}>-</a>
         }
-        return <a className="Track-action" onClick={this.addTrack}>+</a>
+        return <a   className="Track-action" 
+                    onClick={this.addTrack}>+</a>
     }
     
     render() {
