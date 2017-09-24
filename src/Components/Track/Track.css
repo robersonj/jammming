@@ -15,6 +15,14 @@
   color: rgba(265, 265, 265, .5);
 }
 
+.Track-icon:hover {
+  color: rgba(265, 265, 265, .5);
+}
+
+a .Track-icon:visited {
+  color: rgba(255, 255, 255, 1);
+}
+
 .Track-information {
   flex-grow: 1;
   display: flex;

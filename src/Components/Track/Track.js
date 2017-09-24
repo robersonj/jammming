@@ -1,5 +1,6 @@
 import React from 'react';
 import './Track.css';
+import FaPlayCircleO from 'react-icons/lib/fa/play-circle-o';
 
 class Track extends React.Component {
     
@@ -28,6 +29,16 @@ class Track extends React.Component {
         return <a   className="Track-action" 
                     onClick={this.addTrack}>+</a>
     }
+
+    renderPreviewIcon() {
+        if(this.props.track.preview) {
+            return <a   href={this.props.track.preview}
+                        target="_blank"
+                        className='Track-icon'><FaPlayCircleO /></a>          
+        }
+    }
+
+    
     
     render() {
         return(
@@ -37,6 +48,9 @@ class Track extends React.Component {
                     <h3>{this.props.track.name}</h3>
                     <p>{this.props.track.artist} | {this.props.track.album}</p>
                 </div>
+                <a href={this.props.track.preview} className="Track-icon" target="_blank">
+                    {this.renderPreviewIcon()}
+                </a>
                 {this.renderAction()}
             </div>
         );
