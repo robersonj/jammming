@@ -11,6 +11,7 @@ class Playlist extends React.Component {
     
     // Updates Playlist name to value user inputs
     handleNameChange(event) {
+        event.preventDefault();
         this.props.onNameChange(event.target.value);
     }
     
