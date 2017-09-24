@@ -20,12 +20,10 @@ class SearchBar extends React.Component {
   
   // Sets the state of term to the value the user enters in input
   handleTermChange(event) {
-    event.preventDefault():
     this.setState({ term: event.target.value });
   }
 
   handleKeyPress(event) {
-    event.preventDefault();
     if(event.key === 'Enter') {
       this.search();
     }
