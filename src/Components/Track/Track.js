@@ -1,13 +1,12 @@
 import React from 'react';
 import './Track.css';
-import ReactAudioPlayer from 'react-audio-player';
 
 class Track extends React.Component {
     
     constructor(props) {
         super(props);
         this.state = {
-            isPlaying: false,
+            currentlyPlaying: false,
         };
         this.addTrack = this.addTrack.bind(this);
         this.removeTrack = this.removeTrack.bind(this);
@@ -37,29 +36,28 @@ class Track extends React.Component {
 
     togglePlayPreview() {
         const audio = this.refs.audio;
-        if (!this.state.isPlaying) {
+        if (!this.state.currentlyPlaying) {
             audio.play();
             this.setState({ 
-                isPlaying: true, 
+                currentlyPlaying: true, 
             });
         } else {
             audio.pause();
             this.setState({ 
-                isPlaying: false,
+                currentlyPlaying: false,
             });
         }
     }
 
     audioEnded() {
         this.setState({
-            isPlaying: false
+            currentlyPlaying: false
         });
     }
 
     renderPreviewIcon() {
         if(this.props.track.preview) {
-            const audio = this.refs.audio;
-            if (!this.state.isPlaying) {
+            if (!this.state.currentlyPlaying) {
                 return (
                     <i  className="fa fa-play Track-preview-icon" 
                         aria-hidden="true" 
@@ -83,8 +81,8 @@ class Track extends React.Component {
                     <div className="Track-preview-container">
                         {this.renderPreviewIcon()}
                     </div>
-                <img className="Track-album-cover" src={this.props.track.cover} alt="album cover"/>
-             </div>
+                    <img className="Track-album-cover" src={this.props.track.cover} alt="album cover"/>
+                </div>
                 <div className="Track-information">
                     <h3>{this.props.track.name}</h3>
                     <p>{this.props.track.artist} | {this.props.track.album}</p>
