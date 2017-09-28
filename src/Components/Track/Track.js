@@ -1,5 +1,6 @@
 import React from 'react';
 import './Track.css';
+import ReactAudioPlayer from 'react-audio-player';
 
 class Track extends React.Component {
     
@@ -25,11 +26,11 @@ class Track extends React.Component {
     // Renders either a + or a - link to add or remove tracks from playlist.
     renderAction() {
         if (this.props.isRemoval) {
-            return <a   className="Track-action" 
-                        onClick={this.removeTrack}>-</a>
+            return <i   className="Track-action fa fa-minus-circle" 
+                        onClick={this.removeTrack}></i>
         }
-        return <a   className="Track-action" 
-                    onClick={this.addTrack}>+</a>
+        return <i   className="Track-action fa fa-plus-circle" 
+                    onClick={this.addTrack}></i>
     }
 
     renderPreviewIcon() {
@@ -54,8 +55,9 @@ class Track extends React.Component {
     }
 
     togglePlayPreview() {
-        const audio = document.getElementsByTagName('audio')[0];
+        const audio = this.refs.audio;
         if (!this.state.isPlaying) {
+          
           audio.play();
           this.setState({ 
             isPlaying: true 
@@ -68,11 +70,15 @@ class Track extends React.Component {
         }
       }
 
+    renderPreviewAudio() {
+        
+    }
+
     render() {
         return(
             <div className="Track" key={this.props.track.id}>
                 <div className="Track-cover-preview">
-                    <audio src={this.props.track.preview}></audio>
+                    <audio ref="audio" src={this.props.track.preview}></audio>
                     <div className="Track-preview-container">
                         {this.renderPreviewIcon()}
                     </div>
