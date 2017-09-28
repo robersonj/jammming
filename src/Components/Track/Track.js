@@ -7,11 +7,13 @@ class Track extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isPlaying: false
+            isPlaying: false,
         };
         this.addTrack = this.addTrack.bind(this);
         this.removeTrack = this.removeTrack.bind(this);
         this.togglePlayPreview = this.togglePlayPreview.bind(this);
+        this.audioEnded = this.audioEnded.bind(this);
+        this.renderPreviewIcon = this.renderPreviewIcon.bind(this);
     }
     // Adds this.props.track as an argument to the addTrack method in App.js
     addTrack() {
@@ -33,52 +35,51 @@ class Track extends React.Component {
                     onClick={this.addTrack}></i>
     }
 
-    renderPreviewIcon() {
-        if(this.props.track.preview) {
-          if (!this.state.isPlaying) {
-            return (
-                <i  className="fa fa-play Track-preview-icon" 
-                    aria-hidden="true" 
-                    onClick={this.togglePlayPreview}></i>
-            );
-          } else {
-            return (
-                <i  className="fa fa-pause Track-preview-icon" 
-                    aria-hidden="true" 
-                    onClick={this.togglePlayPreview}></i>
-            );
-          }
-          
-        } else {
-          return <p className="Track-preview-unavailable">No <br/> Preview <br />Available</p>
-        }
-    }
-
     togglePlayPreview() {
         const audio = this.refs.audio;
         if (!this.state.isPlaying) {
-          
-          audio.play();
-          this.setState({ 
-            isPlaying: true 
-          });
+            audio.play();
+            this.setState({ 
+                isPlaying: true, 
+            });
         } else {
-          audio.pause();
-          this.setState({ 
-            isPlaying: false 
-          });
+            audio.pause();
+            this.setState({ 
+                isPlaying: false,
+            });
         }
-      }
+    }
 
-    renderPreviewAudio() {
-        
+    audioEnded() {
+        this.setState({
+            isPlaying: false
+        });
+    }
+
+    renderPreviewIcon() {
+        if(this.props.track.preview) {
+            const audio = this.refs.audio;
+            if (!this.state.isPlaying) {
+                return (
+                    <i  className="fa fa-play Track-preview-icon" 
+                        aria-hidden="true" 
+                        onClick={this.togglePlayPreview}></i>
+                );
+            }
+            return (
+                    <i  className="fa fa-pause Track-preview-icon" 
+                        aria-hidden="true" 
+                        onClick={this.togglePlayPreview}></i>
+            );
+        }
+        return <p className="Track-preview-unavailable">No <br/> Preview <br />Available</p>
     }
 
     render() {
         return(
             <div className="Track" key={this.props.track.id}>
                 <div className="Track-cover-preview">
-                    <audio ref="audio" src={this.props.track.preview}></audio>
+                    <audio ref="audio" src={this.props.track.preview} onEnded={this.audioEnded}></audio>
                     <div className="Track-preview-container">
                         {this.renderPreviewIcon()}
                     </div>
