@@ -1,14 +1,16 @@
 import React from 'react';
 import './Track.css';
-import FaPlayCircleO from 'react-icons/lib/fa/play-circle-o';
 
 class Track extends React.Component {
     
     constructor(props) {
         super(props);
-
+        this.state = {
+            isPlaying: false
+        };
         this.addTrack = this.addTrack.bind(this);
-        this.removeTrack = this.removeTrack.bind(this)
+        this.removeTrack = this.removeTrack.bind(this);
+        this.togglePlayPreview = this.togglePlayPreview.bind(this);
     }
     // Adds this.props.track as an argument to the addTrack method in App.js
     addTrack() {
@@ -32,25 +34,54 @@ class Track extends React.Component {
 
     renderPreviewIcon() {
         if(this.props.track.preview) {
-            return <a   href={this.props.track.preview}
-                        target="_blank"
-                        className='Track-icon'><FaPlayCircleO /></a>          
+          if (!this.state.isPlaying) {
+            return (
+                <i  className="fa fa-play Track-preview-icon" 
+                    aria-hidden="true" 
+                    onClick={this.togglePlayPreview}></i>
+            );
+          } else {
+            return (
+                <i  className="fa fa-pause Track-preview-icon" 
+                    aria-hidden="true" 
+                    onClick={this.togglePlayPreview}></i>
+            );
+          }
+          
+        } else {
+          return <p className="Track-preview-unavailable">No <br/> Preview <br />Available</p>
         }
     }
 
-    
-    
+    togglePlayPreview() {
+        const audio = document.getElementsByTagName('audio')[0];
+        if (!this.state.isPlaying) {
+          audio.play();
+          this.setState({ 
+            isPlaying: true 
+          });
+        } else {
+          audio.pause();
+          this.setState({ 
+            isPlaying: false 
+          });
+        }
+      }
+
     render() {
         return(
-            <div className="Track">
-                <img src={this.props.track.cover} />
+            <div className="Track" key={this.props.track.id}>
+                <div className="Track-cover-preview">
+                    <audio src={this.props.track.preview}></audio>
+                    <div className="Track-preview-container">
+                        {this.renderPreviewIcon()}
+                    </div>
+                <img className="Track-album-cover" src={this.props.track.cover} alt="album cover"/>
+             </div>
                 <div className="Track-information">
                     <h3>{this.props.track.name}</h3>
                     <p>{this.props.track.artist} | {this.props.track.album}</p>
                 </div>
-                <a href={this.props.track.preview} className="Track-icon" target="_blank">
-                    {this.renderPreviewIcon()}
-                </a>
                 {this.renderAction()}
             </div>
         );
